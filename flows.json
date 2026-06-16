@@ -1,0 +1,108 @@
+[
+    {
+        "id": "mqtt_in_node",
+        "type": "mqtt in",
+        "z": "0c7668e8368019ee",
+        "name": "Recebe Alerta CubeSat",
+        "topic": "satelite/cubesat/alerta",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "broker_config_id",
+        "nl": false,
+        "rap": true,
+        "inputs": 0,
+        "x": 449,
+        "y": 60,
+        "wires": [
+            [
+                "debug_node",
+                "function_log"
+            ]
+        ]
+    },
+    {
+        "id": "debug_node",
+        "type": "debug",
+        "z": "0c7668e8368019ee",
+        "name": "Alerta Visual (Debug)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload.alerta",
+        "statusType": "auto",
+        "x": 749,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "function_log",
+        "type": "function",
+        "z": "0c7668e8368019ee",
+        "name": "Formata Log",
+        "func": "var dataHora = new Date().toLocaleString();\nmsg.payload = \"[CRÍTICO - \" + dataHora + \"] Falha detectada. Temp: \" + msg.payload.temp_atual + \"C\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 689,
+        "y": 100,
+        "wires": [
+            [
+                "file_log_node"
+            ]
+        ]
+    },
+    {
+        "id": "file_log_node",
+        "type": "file",
+        "z": "0c7668e8368019ee",
+        "name": "Gravar Log Terrestre",
+        "filename": "log_satelite.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 949,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "broker_config_id",
+        "type": "mqtt-broker",
+        "name": "Test Mosquitto",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
